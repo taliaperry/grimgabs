@@ -3,45 +3,625 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./grimtest.css">
- 
+    
+    <title>Grim Gabs: Adventures in Augmentative Interspecies Communication (AIC) with our border collie mix</title>
+    
+ <style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Code+Latin&display=swap');
+
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+--floor: #EBE8CE;
+--tile: #A0DEEB;
+--text: #73979E;
+--tilefade: #EBE188;
+--textfade: #9E9864;
+--tilebright: #EBB7CC;
+--textbright: #9E6C81;
+}
+
+html {background-color: var(--floor);
+font-size: 16px;
+font-family: 'M PLUS Code Latin', sans-serif;
+font-weight:500;
+color: #333333}
+
+header {padding:1em; padding-bottom: 2em;}
+footer {padding:1em; font-size:0.75em}
+
+a:link {
+color: var(--textbright);
+text-decoration: none;}
+a:visited {
+color: var(--textbright);
+text-decoration: none;}
+a:hover {
+color: var(--textfade);
+text-decoration: underline;}
+
+#hexGrid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 95%;
+  margin: 0 auto;
+  overflow: hidden;
+  list-style-type: none;
+  padding-bottom: 96px; /* big placeholder, not calculated */
+}
+
+.hex {
+  position: relative;
+}
+
+.hex::after{
+  content:'';
+  display:block;
+  padding-bottom: 86.602%;  /* =  100 / tan(60) * 1.5 */
+}
+
+.hexIn{
+  position: absolute;
+  width:96%;
+  padding-bottom: 110.851%; /* =  width / sin(60) */
+  margin: 2%;
+  overflow: hidden;
+  visibility: visible;
+  -webkit-transform: rotate3d(0,0,1,-60deg) skewY(30deg);
+      -ms-transform: rotate3d(0,0,1,-60deg) skewY(30deg);
+          transform: rotate3d(0,0,1,-60deg) skewY(30deg);
+    
+    
+}
+
+.hexIn * {
+  position: absolute;
+  visibility: visible;
+}
+
+.hexTileB, .hexTileP, .hexTileY, .hexTileEmpty {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-transform: skewY(-30deg) rotate3d(0,0,1,60deg);
+        -ms-transform: skewY(-30deg) rotate3d(0,0,1,60deg);
+            transform: skewY(-30deg) rotate3d(0,0,1,60deg);
+}
+
+.hexTileB {
+  background-color: var(--tile);
+   color: var(--text);}
+  
+.hexTileP {
+  background-color: var(--tilebright);
+   color: var(--textbright);}
+
+.hexTileY {
+  background-color: var(--tilefade);
+   color: var(--textfade);}
+
+.hexTileEmpty {   
+  background-color: var(--floor);
+}
+
+   .hexLink {
+    display:block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+
+
+/*** HEX CONTENT **********************************************************************/
+
+.hex p {
+  width: 100%;
+  padding: 5%;
+  z-index: 1;
+  overflow:hidden;
+}
+
+.hex img {
+  left: -100%;
+  right: -100%;
+  width: auto;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.hex a {position:relative; 
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.minititle {position:relative; font-size: 1em; letter-spacing: .25em; line-height:3em;
+font-weight:800; text-decoration: underline var(--floor); text-decoration-thickness: 2px;}
+
+.bignum {position:relative; font-size: 2em;
+font-weight:800;}
+
+.lilref {position:relative; font-size: 1em;
+font-weight:800;}
+
+.future {position:relative; color: #666666; font-style: italic}
+
+
+/*** HEXAGON SIZING AND EVEN ROW INDENTATION *****************************************************************/
+
+@media (min-width:1001px) { /* <- 4-3  hexagons per row */
+  .hex {
+    width: 25%; /* = 100 / 4 */
+  }
+  .hex:nth-child(7n+5){ /* first hexagon of even rows */
+    margin-left:12.5%;  /* = width of .hex / 2  to indent even rows */
+  }
+}
+
+@media (max-width: 1000px) and (min-width:651px) { /* <- 3-2  hexagons per row */
+  .hex {
+    width: 33.333%; /* = 100 / 3 */
+  }
+  .hex:nth-child(5n+4){ /* first hexagon of even rows */
+    margin-left:16.666%;  /* = width of .hex / 2  to indent even rows */
+  }
+}
+
+@media (max-width: 650px) { /* <- 2-1  hexagons per row */
+  html {
+font-size: 14px;}
+  .hex {
+    width: 50%; /* = 100 / 3 */
+  }
+  .hex:nth-child(3n+3){ /* first hexagon of even rows */
+    margin-left:25%;  /* = width of .hex / 2  to indent even rows */
+  }
+}
+
+
+</style>
 
   </head>
   <body>
-    <div class='container'>
-     
-      <h2>Here it is, at work</h2>
+    <header>
+      <h2>Grim Gabs</h2>
+      <p>Adventures in Augmentative Interspecies Communication (AIC) with <a href="https://www.instagram.com/thegrimsheeper" target="_blank">our border collie mix</a></p>
+<p>We took a little break from the grind of logging in December, so the data below is <em>frozen in time</em> as of the last log date. I then had a little fun with data viz for those four full months (!) of button-pressing, the results of which appear at the end of the page (ultimately hoping to make these interactive, but was just playing with things in Rawgraphs and Illustrator for now). We'll get back to logging soon; in the meantime, we're still chatting away, just less publicly.</p>
+    </header>
 
 
-      <p>data : <span 
+    <ul id="hexGrid">
+    
+    
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p>updated: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='1' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span>
+          <br>backlog: <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='2' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <span class="lilref" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='2' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> 
+          <br>log length: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='3' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <span class="lilref" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='3' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <br>
+          (log started ~3 weeks after<br>his <a href="https://www.instagram.com/reel/CwGaUYAK1QK/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==" target="_blank">"first word"</a>)
+          </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p># of buttons onboard: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='5' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span>
+     <br><br>
+            most recently added: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='82' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          on <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='78' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='81' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <br>
+          and used a total of <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='83' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times since
+          </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex picture">
+        <div class="hexIn">
+          <div class="hexTileY">
+                <div class='img' style='background-image: url(https://lh3.googleusercontent.com/pw/AIL4fc9UtjDuUdjvoNzCLH14VItGTbGszhrW6-wB5xH6VUMvJQingvcNFxLvLYyeRD8MntJksQVtGRitAfKSlHKrTLCngZVQCnHyVp4hdRTK9pBPHULizUQeylMIYdhX-gprL70cpUb141mgoUTJ4SywUBUIuw=w657-h876-s-no?authuser=0);'></div>
+          </div>
+        </div>
+      </li>
+      
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p><span class="minititle">Categories</span> <br>
+            of <span class="bignum" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='11' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> language categories, most buttons are classified as: <br>
+          <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='11' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          and most active this week <span class="lilref" 
           data-google-sheet-column='1' 
-          data-google-sheet-row='18' 
-          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span>: 
-                <span 
+          data-google-sheet-row='50' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='50' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span>
+          </p>
+          </div>
+        </div>
+      </li>
+      
+      
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+      
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Conversations</span> <br>
+            total: <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='13' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> conversations<br>
+            this week: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='14' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+            average week: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='17' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br><br>
+            trending: <span class="lilref" 
           data-google-sheet-column='2' 
           data-google-sheet-row='18' 
-          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span>
-                    
-      </p>
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Button Presses</span> <br>
+            total: <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='20' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> presses<br>
+            this week: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='21' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+            average week: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='24' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br><br>
+            trending: <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='25' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileP">
+            <p><span class="minititle">Sloppy Footwork</span> <br>
+            accidental or silent presses this week: <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='29' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br><br>
+            trending: <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='33' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
+      
+        
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+        
+            <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p><span class="minititle">Timing</span> <br>
+            usually <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='35' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          and this week <span class="lilref" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='36' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br><br>
+          has given us a wake-up greeting <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='37' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> out of <span class="bignum" 
+          data-google-sheet-column='4' 
+          data-google-sheet-row='37' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> mornings
+          </p>
+          </div>
+        </div>
+      </li>
+      
+        
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Favorite Buttons</span> <br>
+            first place: <span class="bignum" 
+          data-google-sheet-column='4' 
+          data-google-sheet-row='39' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          a whopping <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='39' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times!<br>
+            second place: <span class="bignum" 
+          data-google-sheet-column='4' 
+          data-google-sheet-row='40' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          a total of <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='40' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times</p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Weekly Favorite</span> <br>
+            first place: <span class="bignum" 
+          data-google-sheet-column='4' 
+          data-google-sheet-row='42' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          a total of <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='42' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times<br>
+            that's <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='45' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p><span class="minititle">Handedness</span> <br>
+            Grim presses buttons with his <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='89' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          approximately <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='90' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> of the time</p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex picture">
+        <div class="hexIn">
+          <div class="hexTileY">
+                <div class='img' style='background-image: url(https://lh3.googleusercontent.com/pw/AIL4fc8hxq9fMIzjHae071oXEinNTKF21Ob9PbMUsV7MchcToJUgtZDlEoQMTUsR_PZhQkckGePBKF3qR-eQtlBkCFtCdyAJKEk7c8FGPwucVJptG2KRVeaZk_Tg_y3VlyiA8HlLZDppewS5nxnpjwiNNfePUA=w360-h360-s-no?authuser=0);'></div>
+          </div>
+        </div>
+      </li>
+      
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+        
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileP">
+            <p><span class="minititle">Micromanager</span> <br>
+            times Grim had to tell us we were, in fact, "all done": <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='52' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
 
-     
+      
+<li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+        
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Buttons On Repeat</span> <br>
+            most common duplicate:<br>
+            <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='59' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          a phrase he's used <span class="bignum" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='59' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times in total</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileB">
+            <p><span class="minititle">Button Encore</span> <br>
+            words repeated consecutively 5+ times:<br>
+            <span class="lilref" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='60' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span></p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex data">
+        <div class="hexIn">
+          <div class="hexTileY">
+            <p><span class="minititle">Linguistic Innovation</span> <br>
+            most common unique word pairing:<br>
+            <span class="bignum" 
+          data-google-sheet-column='2' 
+          data-google-sheet-row='73' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span><br>
+          a phrase he's used <span class="bignum" 
+          data-google-sheet-column='3' 
+          data-google-sheet-row='73' 
+          data-google-sheet-url='https://docs.google.com/spreadsheets/d/e/2PACX-1vRz92NEqzIecfYEhBqVsXQnXGU6-xGSSNigAJV9EK22Er4LT__MzWbWTWqB3gw6D6chGR8WUqQbMWJp/pub?gid=1219730722&single=true&output=csv'></span> times in total</p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+
+            <li class="hex picture">
+        <div class="hexIn">
+          <div class="hexTileY">
+                            <a class="hexLink" href="https://taliaperry.github.io/grimgabs/GRIM_wordsbyweek_bump.png" target="_blank">
+                <div class='img' style='background-image: url(https://taliaperry.github.io/grimgabs/GRIM_wordsbyweek_bump.png);'></div>     
+      </a>
+             </div> 
+        </div>
+      </li>
+
+            <li class="hex picture">
+        <div class="hexIn">
+          <div class="hexTileY">
+                            <a class="hexLink" href="https://taliaperry.github.io/grimgabs/GRIM_wordpairs_arc.png" target="_blank">
+                <div class='img' style='background-image: url(https://taliaperry.github.io/grimgabs/GRIM_wordpairs_arc.png);'></div>
+                            </a>
+          </div>
+        </div>
+      </li>
+
+            <li class="hex picture">
+        <div class="hexIn">
+          <div class="hexTileY">
+                            <a class="hexLink" href="https://taliaperry.github.io/grimgabs/GRIM_categoriesbyweek_streamgrapharea.png" target="_blank">
+                <div class='img' style='background-image: url(https://taliaperry.github.io/grimgabs/GRIM_categoriesbyweek_streamgrapharea.png);'></div>
+                            </a>
+          </div>
+        </div>
+      </li>
+   
+      
+      <li class="hex empty">
+<div class="hexIn">
+<div class="hexTileEmpty"></div>
+</div>
+</li> 
+      
+    </ul>
+
+
+
+
+<footer>I thought it would be fun to do the thing you're not supposed to do and treat Google Sheets as a baby database, and threw this together. To make this work, I applied this <a href="https://codepen.io/mattkahl/pen/mqGWZg" target="_blank">codepen by Matt Kahl</a> to link the data that you're (hopefully) seeing here, and the layout uses a tweaked version of the math from this <a href="https://codepen.io/adamriguez/pen/eRaXeq" target="_blank">hexagon layout by Adam Riguez</a>. Log and analytics compiled by <a href="https://taliaperry.com/" target="_blank">Talia Perry</a>, 2023 (<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en_US" target="_blank">CC BY-NC-SA 4.0</a>). &#x1f43e; by Grim.</footer>
+
+
 
     <div id='google-sheet-replacer'>
-
-      <!-- GOOGLE SHEET REPLACER -- THIS IS THE BEGINNING OF WHAT YOU SHOULD COPY INTO YOUR HTML-->
-      <!-- MAKE SURE IT THIS IS PASTED JUST BEFORE THE CLOSING </body> TAG OF YOUR HTML-->
       <script type='text/javascript'>
         // Borrowed from https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm and minified for copy-ability reasons
         var CSVToArray = function CSVToArray(e,r){r=r||",";for(var n=new RegExp("(\\"+r+'|\\r?\\n|\\r|^)(?:"([^"]*(?:""[^"]*)*)"|([^"\\'+r+"\\r\\n]*))","gi"),g=[[]],l=null;l=n.exec(e);){var a=l[1];if(a.length&&a!=r&&g.push([]),l[2])p=l[2].replace(new RegExp('""',"g"),'"');else var p=l[3];g[g.length-1].push(p)}return g}      
-
-        // Loads a Google Sheet at the given url and passes the Google Sheet as 2D array
-        // into the callback function.
         var fetchGoogleSheetAsArray = function fetchGoogleSheetAsArray(googleSheetURL, callback) {
           var googleSheetRequest = new XMLHttpRequest();
           googleSheetRequest.addEventListener('load', function() {
-            var rawCSVText = googleSheetRequest.responseText;
-            // Invoke the provided callback and pass a 2D array (parsed from the converted CSV)
-            // as its argument.           
+            var rawCSVText = googleSheetRequest.responseText;          
             callback(CSVToArray(rawCSVText));
           });
           googleSheetRequest.addEventListener('error', function() {
@@ -50,30 +630,19 @@
           googleSheetRequest.open('GET', googleSheetURL);
           googleSheetRequest.send();
         }
-
-        // Searches for all elements on the DOM with a 'data-google-sheet-url' attribute, fetches
-        // that Google Sheet, and replaces the contents of the element with the contents of the cell
-        // specified by 'data-google-sheet-column' and 'data-google-sheet' row attributes.
         var processAllGoogleSheetReplacerElements = function processAllGoogleSheetReplacerElements() {
           googleSheetElements = document.querySelectorAll('[data-google-sheet-url]');
           googleSheetElements.forEach(function (googleSheetElement){
             var googleSheetURL = googleSheetElement.getAttribute('data-google-sheet-url');
-            // Parse the column and row attributes as integers
             var googleSheetColumn = parseInt(googleSheetElement.getAttribute('data-google-sheet-column'), 10);
             var googleSheetRow = parseInt(googleSheetElement.getAttribute('data-google-sheet-row'), 10);
             fetchGoogleSheetAsArray(googleSheetURL, function(googleSheetArray) {
-              // The Google Sheet specified rows and columsn are one-based and the array is zero-based, so
-              // we're accounting for that below.
               googleSheetElement.innerHTML = googleSheetArray[googleSheetRow - 1][googleSheetColumn - 1];
             });
           });
         }
-
-        // Process all Google Sheet Replacer elements
         processAllGoogleSheetReplacerElements();
       </script>
-      <!-- GOOGLE SHEET REPLACER -- THIS IS THE END OF WHAT YOU SHOULD COPY INTO YOUR HTML-->      
-
     </div>
     
   </body>
